@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PLAYER 01 - Cyberpunk Portfolio</title>
+    <!-- Tailwind CSS for utility classes -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts for futuristic Y2K/Gaming aesthetics -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&family=Noto+Sans+TC:wght@400;700;900&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --neon-cyan: #00f0ff;
+            --neon-pink: #ff0055;
+            --neon-yellow: #ffe600;
+            --neon-purple: #b026ff;
+            --cyber-dark: #0a0a12;
+            --panel-bg: rgba(16, 18, 27, 0.75);
+        }
+
+        body {
+            background-color: var(--cyber-dark);
+            font-family: 'Share Tech Mono', 'Noto Sans TC', monospace;
+            color: #ffffff;
+            overflow-x: hidden;
+            background-image: 
+                radial-gradient(circle at 50% 20%, rgba(176, 38, 255, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(0, 240, 255, 0.1) 0%, transparent 40%);
+        }
+
+        /* Animated Cyber Grid Background */
+        .cyber-grid {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-size: 40px 40px;
+            background-image: 
+                linear-gradient(to right, rgba(0, 240, 255, 0.05) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(0, 240, 255, 0.05) 1px, transparent 1px);
+            z-index: -2;
+            pointer-events: none;
+        }
+
+        /* CRT Scanlines Effect */
+        .scanline {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                rgba(18, 16, 16, 0) 50%, 
+                rgba(0, 0, 0, 0.25) 50%
+            );
+            background-size: 100% 4px;
+            z-index: 99;
+            pointer-events: none;
+            opacity: 0.6;
+        }
+
+        /* Y2K Glassmorphism Panels */
+        .glass-panel {
+            background: var(--panel-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(0, 240, 255, 0.2);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.7),
+                        inset 0 0 15px rgba(0, 240, 255, 0.05);
+        }
+
+        /* Neon Glow Effects */
+        .text-glow-cyan {
+            text-shadow: 0 0 8px var(--neon-cyan), 0 0 20px var(--neon-cyan);
+        }
+        .text-glow-pink {
+            text-shadow: 0 0 8px var(--neon-pink), 0 0 20px var(--neon-pink);
+        }
+
+        /* Avatar Hologram Spinner */
+        @keyframes rotateGlow {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .avatar-container {
+            position: relative;
+        }
+        .avatar-container::before {
+            content: '';
+            position: absolute;
+            top: -6px;
+            left: -6px;
+            right: -6px;
+            bottom: -6px;
+            border-radius: 50%;
+            background: conic-gradient(from 0deg, var(--neon-cyan), var(--neon-pink), var(--neon-yellow), var(--neon-cyan));
+            animation: rotateGlow 6s linear infinite;
+            z-index: 0;
+            opacity: 0.8;
+            filter: blur(4px);
+        }
+
+        /* Button Futuristic Clip Paths & Transitions */
+        .quest-btn-unlocked {
+            position: relative;
+            background: linear-gradient(135deg, rgba(0, 240, 255, 0.15) 0%, rgba(10, 10, 18, 0.8) 100%);
+            border: 1px solid var(--neon-cyan);
+            box-shadow: 0 0 10px rgba(0, 240, 255, 0.2);
+            transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            clip-path: polygon(12px 0, 100% 0, 100% calc(100% - 12px), calc(100% - 12px) 100%, 0 100%, 0 12px);
+        }
+
+        .quest-btn-unlocked:hover {
+            transform: translateY(-4px) scale(1.02);
+            background: linear-gradient(135deg, rgba(0, 240, 255, 0.3) 0%, rgba(255, 0, 85, 0.2) 100%);
+            border-color: #ffffff;
+            box-shadow: 0 0 20px rgba(0, 240, 255, 0.6), 0 0 35px rgba(255, 0, 85, 0.4);
+        }
+
+        .quest-btn-unlocked:active {
+            transform: translateY(1px) scale(0.98);
+        }
+
+        /* Locked State Style */
+        .quest-btn-locked {
+            position: relative;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px dashed rgba(255, 255, 255, 0.15);
+            color: rgba(255, 255, 255, 0.35);
+            cursor: not-allowed;
+            clip-path: polygon(12px 0, 100% 0, 100% calc(100% - 12px), calc(100% - 12px) 100%, 0 100%, 0 12px);
+            transition: all 0.2s ease;
+        }
+
+        .quest-btn-locked:hover {
+            background: rgba(255, 0, 85, 0.08);
+            border-color: rgba(255, 0, 85, 0.4);
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        /* Shake animation when clicking locked quest */
+        @keyframes denyiShake {
+            0%, 100% { transform: translateX(0); }
+            20% { transform: translateX(-8px); }
+            40% { transform: translateX(8px); }
+            60% { transform: translateX(-5px); }
+            80% { transform: translateX(5px); }
+        }
+
+        .shake-animation {
+            animation: denyiShake 0.4s ease-in-out;
+            border-color: var(--neon-pink) !important;
+            box-shadow: 0 0 15px rgba(255, 0, 85, 0.5) !important;
+        }
+
+        /* Glitch overlay on hover for active items */
+        .glitch-tag {
+            font-family: 'Orbitron', sans-serif;
+        }
+
+        /* HUD Lines Decoration */
+        .hud-corner-tl {
+            position: absolute; top: -2px; left: -2px; width: 8px; height: 8px;
+            border-top: 2px solid var(--neon-cyan); border-left: 2px solid var(--neon-cyan);
+        }
+        .hud-corner-br {
+            position: absolute; bottom: -2px; right: -2px; width: 8px; height: 8px;
+            border-bottom: 2px solid var(--neon-cyan); border-right: 2px solid var(--neon-cyan);
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between items-center p-4 sm:p-6 md:p-10 relative">
+
+    <!-- Background Grid Effects -->
+    <div class="cyber-grid"></div>
+    <div class="scanline"></div>
+
+    <!-- MAIN CONTAINER -->
+    <main class="w-full max-w-5xl mx-auto z-10 flex flex-col items-center">
+
+        <!-- PROFILE HEADER CARD -->
+        <header class="glass-panel w-full p-6 sm:p-8 rounded-2xl mb-8 relative overflow-hidden flex flex-col md:flex-row items-center justify-between gap-6 border-cyan-500/30">
+            
+            <!-- Top Cyberpunk Accent Bar -->
+            <div class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-cyan-400 via-pink-500 to-yellow-400"></div>
+
+            <!-- Left / Center: Avatar & Info -->
+            <div class="flex flex-col sm:flex-row items-center gap-6 text-center sm:text-left z-10">
+                <!-- Avatar with rotating glow -->
+                <div class="avatar-container rounded-full p-1 bg-black">
+                    <img 
+                        src="https://placehold.co/120x120/0a0a12/00f0ff?text=PLAYER+01" 
+                        alt="Player Avatar" 
+                        class="w-24 h-24 sm:w-28 sm:h-28 rounded-full object-cover relative z-10 border-2 border-black"
+                        onerror="this.src='https://placehold.co/120x120/1a1a2e/ffffff?text=AVATAR'"
+                    >
+                </div>
+
+                <!-- User Details -->
+                <div class="space-y-2">
+                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-950/60 border border-cyan-500/40 text-xs font-mono text-cyan-300">
+                        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                        SYSTEM ONLINE // SYSTEM READY
+                    </div>
+                    <h1 class="text-3xl sm:text-4xl font-black tracking-wider glitch-tag text-white text-glow-cyan">
+                        PLAYER 01
+                    </h1>
+                    <p class="text-sm text-slate-300 font-mono tracking-widest flex items-center justify-center sm:justify-start gap-2">
+                        <i class="fa-solid fa-code text-pink-500"></i>
+                        <span>WEB DEV PORTFOLIO</span>
+                        <span class="text-xs bg-pink-500/20 text-pink-400 px-2 py-0.5 rounded border border-pink-500/30">LV.16</span>
+                    </p>
+                </div>
+            </div>
+
+            <!-- Right: Quest Progress Bar -->
+            <div class="w-full md:w-64 glass-panel p-4 rounded-xl border-slate-700/50 flex flex-col gap-2 z-10">
+                <div class="flex justify-between text-xs font-mono">
+                    <span class="text-slate-400">TOTAL PROGRESS</span>
+                    <span class="text-cyan-400 font-bold">2 / 16 COMPLETED</span>
+                </div>
+                <!-- Progress Bar Outer -->
+                <div class="w-full bg-slate-900/80 h-3 rounded-full overflow-hidden p-0.5 border border-cyan-500/30">
+                    <div class="bg-gradient-to-r from-cyan-400 to-pink-500 h-full rounded-full transition-all duration-1000 shadow-[0_0_10px_rgba(0,240,255,0.8)]" style="width: 12.5%;"></div>
+                </div>
+                <div class="text-[10px] text-slate-500 text-right font-mono">12.5% UNLOCKED</div>
+            </div>
+        </header>
+
+        <!-- QUEST SELECT HEADER -->
+        <div class="w-full flex items-center justify-between mb-6 px-2">
+            <div class="flex items-center gap-3">
+                <div class="w-3 h-3 bg-cyan-400 rotate-45 shadow-[0_0_8px_#00f0ff]"></div>
+                <h2 class="text-xl sm:text-2xl font-bold tracking-widest font-['Orbitron'] text-cyan-300">
+                    SELECT QUEST // 選單任務
+                </h2>
+            </div>
+            <span class="text-xs font-mono text-slate-400 hidden sm:inline-block">
+                [ CLICK TO LAUNCH MODULE ]
+            </span>
+        </div>
+
+        <!-- 16 BUTTONS GRID (RWD: 1 col mobile, 2 col tablet, 4 col desktop) -->
+        <section class="w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
+            
+            <!-- BUTTON 1 (Unlocked) -->
+            <a href="w1/index.html" class="quest-btn-unlocked p-4 rounded-lg flex flex-col justify-between h-32 group relative">
+                <div class="hud-corner-tl"></div>
+                <div class="hud-corner-br"></div>
+                <div class="flex justify-between items-start">
+                    <span class="text-xs font-bold font-mono px-2 py-0.5 rounded bg-cyan-500/20 text-cyan-300 border border-cyan-500/40">
+                        QUEST 01
+                    </span>
+                    <span class="text-xs text-emerald-400 font-mono flex items-center gap-1">
+                        <i class="fa-solid fa-circle-check"></i> UNLOCKED
+                    </span>
+                </div>
+                <div class="my-auto">
+                    <h3 class="text-lg font-bold text-white group-hover:text-cyan-300 transition-colors">
+                        Week 1 - 數位名片
+                    </h3>
+                    <p class="text-xs text-slate-400 mt-1 font-mono">進入週次頁面 &rarr;</p>
+                </div>
+                <div class="w-full bg-cyan-500/20 h-1 rounded-full overflow-hidden">
+                    <div class="bg-cyan-400 h-full w-full"></div>
+                </div>
+            </a>
+
+            <!-- BUTTON 2 (Unlocked) -->
+            <a href="w2/index.html" class="quest-btn-unlocked p-4 rounded-lg flex flex-col justify-between h-32 group relative">
+                <div class="hud-corner-tl"></div>
+                <div class="hud-corner-br"></div>
+                <div class="flex justify-between items-start">
+                    <span class="text-xs font-bold font-mono px-2 py-0.5 rounded bg-cyan-500/20 text-cyan-300 border border-cyan-500/40">
+                        QUEST 02
+                    </span>
+                    <span class="text-xs text-emerald-400 font-mono flex items-center gap-1">
+                        <i class="fa-solid fa-circle-check"></i> UNLOCKED
+                    </span>
+                </div>
+                <div class="my-auto">
+                    <h3 class="text-lg font-bold text-white group-hover:text-cyan-300 transition-colors">
+                        Week 2 - 今天吃甚麼?
+                    </h3>
+                    <p class="text-xs text-slate-400 mt-1 font-mono">進入週次頁面 &rarr;</p>
+                </div>
+                <div class="w-full bg-cyan-500/20 h-1 rounded-full overflow-hidden">
+                    <div class="bg-cyan-400 h-full w-full"></div>
+                </div>
+            </a>
+
+            <!-- BUTTON 3 (Locked) -->
+            <button onclick="handleLockedClick(this, 3)" class="quest-btn-locked p-4 rounded-lg flex flex-col justify-between h-32 text-left relative group">
+                <div class="flex justify-between items-start">
+                    <span class="text-xs font-mono text-slate-500">QUEST 03</span>
+                    <span class="text-xs text-pink-500/80 font-mono flex items-center gap-1">
+                        <i class="fa-solid fa-lock"></i> LOCKED
+                    </span>
+                </div>
+                <div class="my-auto opacity-60">
+                    <h3 class="text-base font-bold text-slate-300 group-hover:text-slate-100 transition-colors">
+                        🔒 Week 3 - 未解鎖任務
+                    </h3>
+                    <p class="text-xs text-slate-500 mt-1 font-mono">需獲得更多經驗值</p>
+                </div>
+                <div class="text-[10px] text-slate-600 font-mono text-right">ACCESS DENIED</div>
+            </button>
+
+            <!-- BUTTON 4 (Locked) -->
+            <button onclick="handleLockedClick(this, 4)" class="quest-btn-locked p-4 rounded-lg flex flex-col justify-between h-32 text-left relative group">
+                <div class="flex justify-between items-start">
+                    <span class="text-xs font-mono text-slate-500">QUEST 04</span>
+                    <span class="text-xs text-pink-500/80 font-mono flex items-center gap-1"><i class="fa-solid fa-lock"></i> LOCKED</span>
+                </div>
+                <div class="my-auto opacity-60">
+                    <h3 class="text-base font-bold text-slate-300 group-hover:text-slate-100 transition-colors">🔒 Week 4 - 未解鎖任務</h3>
+                    <p class="text-xs text-slate-500 mt-1 font-mono">需獲得更多經驗值</p>
+                </div>
+                <div class="text-[10px] text-slate-600 font-mono text-right">ACCESS DENIED</div>
+            </button>
+
+            <!-- BUTTON 5 (Locked) -->
+            <button onclick="handleLockedClick(this, 5)" class="quest-btn-locked p-4 rounded-lg flex flex-col justify-between h-32 text-left relative group">
+                <div class="flex justify-between items-start">
+                    <span class="text-xs font-mono text-slate-500">QUEST 05</span>
+                    <span class="text-xs text-pink-500/80 font-mono flex items-center gap-1"><i class="fa-solid fa-lock"></i> LOCKED</span>
+                </div>
+                <div class="my-auto opacity-60">
+                    <h3 class="text-base font-bold text-slate-300 group-hover:text-slate-100 transition-colors">🔒 Week 5 - 未解鎖任務</h3>
+                    <p class="text-xs text-slate-500 mt-1 font-mono">需獲得更多經驗值</p>
+                </div>
+                <div class="text-[10px] text-slate-600 font-mono text-right">ACCESS DENIED</div>
+            </button>
+
+            <!-- BUTTON 6 (Locked) -->
+            <button onclick="handleLockedClick(this, 6)" class="quest-btn-locked p-4 rounded-lg flex flex-col justify-between h-32 text-left relative group">
+                <div class="flex justify-between items-start">
+                    <span class="text-xs font-mono text-slate-500">QUEST 06</span>
+                    <span class="text-xs text-pink-500/80 font-mono flex items-center gap-1"><i class="fa-solid fa-lock"></i> LOCKED</span>
+                </div>
+                <div class="my-auto opacity-60">
+                    <h3 class="text-base font-bold text-slate-300 group-hover:text-slate-100 transition-colors">🔒 Week 6 - 未解鎖任務</h3>
+                    <p class="text-xs text-slate-500 mt-1 font-mono">需獲得更多經驗值</p>
+                </div>
+                <div class="text-[10px] text-slate-600 font-mono text-right">ACCESS DENIED</div>
+            </button>
+
+            <!-- BUTTON 7 (Locked) -->
+            <button onclick="handleLockedClick(this, 7)" class="quest-btn-locked p-4 rounded-lg flex flex-col justify-between h-32 text-left relative group">
+                <div class="flex justify-between items-start">
+                    <span class="text-xs font-mono text-slate-500">QUEST 07</span>
+                    <span class="text-xs text-pink-500/80 font-mono flex items-center gap-1"><i class="fa-solid fa-lock"></i> LOCKED</span>
+                </div>
+                <div class="my-auto opacity-60">
+                    <h3 class="text-base font-bold text-slate-300 group-hover:text-slate-100 transition-colors">🔒 Week 7 - 未解鎖任務</h3>
+                    <p class="text-xs text-slate-500 mt-1 font-mono">需獲得更多經驗值</p>
+                </div>
+                <div class="text-[10px] text-slate-600 font-mono text-right">ACCESS DENIED</div>
+            </button>
+
+            <!-- BUTTON 8 (Locked) -->
+            <button onclick="handleLockedClick(this, 8)" class="quest-btn-locked p-4 rounded-lg flex flex-col justify-between h-32 text-left relative group">
+                <div class="flex justify-between items-start">
+                    <span class="text-xs font-mono text-slate-500">QUEST 08</span>
+                    <span class="text-xs text-pink-500/80 font-mono flex items-center gap-1"><i class="fa-solid fa-lock"></i> LOCKED</span>
+                </div>
+                <div class="my-auto opacity-60">
+                    <h3 class="text-base font-bold text-slate-300 group-hover:text-slate-100 transition-colors">🔒 Week 8 - 未解鎖任務</h3>
+                    <p class="text-xs text-slate-500 mt-1 font-mono">需獲得更多經驗值</p>
+                </div>
+                <div class="text-[10px] text-slate-600 font-mono text-right">ACCESS DENIED</div>
+            </button>
+
+            <!-- BUTTON 9 (Locked) -->
+            <button onclick="handleLockedClick(this, 9)" class="quest-btn-locked p-4 rounded-lg flex flex-col justify-between h-32 text-left relative group">
+                <div class="flex justify-between items-start">
+                    <span class="text-xs font-mono text-slate-500">QUEST 09</span>
+                    <span class="text-xs text-pink-500/80 font-mono flex items-center gap-1"><i class="fa-solid fa-lock"></i> LOCKED</span>
+                </div>
+                <div class="my-auto opacity-60">
+                    <h3 class="text-base font-bold text-slate-300 group-hover:text-slate-100 transition-colors">🔒 Week 9 - 未解鎖任務</h3>
+                    <p class="text-xs text-slate-500 mt-1 font-mono">需獲得更多經驗值</p>
+                </div>
+                <div class="text-[10px] text-slate-600 font-mono text-right">ACCESS DENIED</div>
+            </button>
+
+            <!-- BUTTON 10 (Locked) -->
+            <button onclick="handleLockedClick(this, 10)" class="quest-btn-locked p-4 rounded-lg flex flex-col justify-between h-32 text-left relative group">
+                <div class="flex justify-between items-start">
+                    <span class="text-xs font-mono text-slate-500">QUEST 10</span>
+                    <span class="text-xs text-pink-500/80 font-mono flex items-center gap-1"><i class="fa-solid fa-lock"></i> LOCKED</span>
+                </div>
+                <div class="my-auto opacity-60">
+                    <h3 class="text-base font-bold text-slate-300 group-hover:text-slate-100 transition-colors">🔒 Week 10 - 未解鎖任務</h3>
+                    <p class="text-xs text-slate-500 mt-1 font-mono">需獲得更多經驗值</p>
+                </div>
+                <div class="text-[10px] text-slate-600 font-mono text-right">ACCESS DENIED</div>
+            </button>
+
+            <!-- BUTTON 11 (Locked) -->
+            <button onclick="handleLockedClick(this, 11)" class="quest-btn-locked p-4 rounded-lg flex flex-col justify-between h-32 text-left relative group">
+                <div class="flex justify-between items-start">
+                    <span class="text-xs font-mono text-slate-500">QUEST 11</span>
+                    <span class="text-xs text-pink-500/80 font-mono flex items-center gap-1"><i class="fa-solid fa-lock"></i> LOCKED</span>
+                </div>
+                <div class="my-auto opacity-60">
+                    <h3 class="text-base font-bold text-slate-300 group-hover:text-slate-100 transition-colors">🔒 Week 11 - 未解鎖任務</h3>
+                    <p class="text-xs text-slate-500 mt-1 font-mono">需獲得更多經驗值</p>
+                </div>
+                <div class="text-[10px] text-slate-600 font-mono text-right">ACCESS DENIED</div>
+            </button>
+
+            <!-- BUTTON 12 (Locked) -->
+            <button onclick="handleLockedClick(this, 12)" class="quest-btn-locked p-4 rounded-lg flex flex-col justify-between h-32 text-left relative group">
+                <div class="flex justify-between items-start">
+                    <span class="text-xs font-mono text-slate-500">QUEST 12</span>
+                    <span class="text-xs text-pink-500/80 font-mono flex items-center gap-1"><i class="fa-solid fa-lock"></i> LOCKED</span>
+                </div>
+                <div class="my-auto opacity-60">
+                    <h3 class="text-base font-bold text-slate-300 group-hover:text-slate-100 transition-colors">🔒 Week 12 - 未解鎖任務</h3>
+                    <p class="text-xs text-slate-500 mt-1 font-mono">需獲得更多經驗值</p>
+                </div>
+                <div class="text-[10px] text-slate-600 font-mono text-right">ACCESS DENIED</div>
+            </button>
+
+            <!-- BUTTON 13 (Locked) -->
+            <button onclick="handleLockedClick(this, 13)" class="quest-btn-locked p-4 rounded-lg flex flex-col justify-between h-32 text-left relative group">
+                <div class="flex justify-between items-start">
+                    <span class="text-xs font-mono text-slate-500">QUEST 13</span>
+                    <span class="text-xs text-pink-500/80 font-mono flex items-center gap-1"><i class="fa-solid fa-lock"></i> LOCKED</span>
+                </div>
+                <div class="my-auto opacity-60">
+                    <h3 class="text-base font-bold text-slate-300 group-hover:text-slate-100 transition-colors">🔒 Week 13 - 未解鎖任務</h3>
+                    <p class="text-xs text-slate-500 mt-1 font-mono">需獲得更多經驗值</p>
+                </div>
+                <div class="text-[10px] text-slate-600 font-mono text-right">ACCESS DENIED</div>
+            </button>
+
+            <!-- BUTTON 14 (Locked) -->
+            <button onclick="handleLockedClick(this, 14)" class="quest-btn-locked p-4 rounded-lg flex flex-col justify-between h-32 text-left relative group">
+                <div class="flex justify-between items-start">
+                    <span class="text-xs font-mono text-slate-500">QUEST 14</span>
+                    <span class="text-xs text-pink-500/80 font-mono flex items-center gap-1"><i class="fa-solid fa-lock"></i> LOCKED</span>
+                </div>
+                <div class="my-auto opacity-60">
+                    <h3 class="text-base font-bold text-slate-300 group-hover:text-slate-100 transition-colors">🔒 Week 14 - 未解鎖任務</h3>
+                    <p class="text-xs text-slate-500 mt-1 font-mono">需獲得更多經驗值</p>
+                </div>
+                <div class="text-[10px] text-slate-600 font-mono text-right">ACCESS DENIED</div>
+            </button>
+
+            <!-- BUTTON 15 (Locked) -->
+            <button onclick="handleLockedClick(this, 15)" class="quest-btn-locked p-4 rounded-lg flex flex-col justify-between h-32 text-left relative group">
+                <div class="flex justify-between items-start">
+                    <span class="text-xs font-mono text-slate-500">QUEST 15</span>
+                    <span class="text-xs text-pink-500/80 font-mono flex items-center gap-1"><i class="fa-solid fa-lock"></i> LOCKED</span>
+                </div>
+                <div class="my-auto opacity-60">
+                    <h3 class="text-base font-bold text-slate-300 group-hover:text-slate-100 transition-colors">🔒 Week 15 - 未解鎖任務</h3>
+                    <p class="text-xs text-slate-500 mt-1 font-mono">需獲得更多經驗值</p>
+                </div>
+                <div class="text-[10px] text-slate-600 font-mono text-right">ACCESS DENIED</div>
+            </button>
+
+            <!-- BUTTON 16 (Locked) -->
+            <button onclick="handleLockedClick(this, 16)" class="quest-btn-locked p-4 rounded-lg flex flex-col justify-between h-32 text-left relative group">
+                <div class="flex justify-between items-start">
+                    <span class="text-xs font-mono text-slate-500">QUEST 16</span>
+                    <span class="text-xs text-pink-500/80 font-mono flex items-center gap-1"><i class="fa-solid fa-lock"></i> LOCKED</span>
+                </div>
+                <div class="my-auto opacity-60">
+                    <h3 class="text-base font-bold text-slate-300 group-hover:text-slate-100 transition-colors">🔒 Week 16 - 未解鎖任務</h3>
+                    <p class="text-xs text-slate-500 mt-1 font-mono">FINAL BOSS TASK</p>
+                </div>
+                <div class="text-[10px] text-slate-600 font-mono text-right">ACCESS DENIED</div>
+            </button>
+
+        </section>
+
+    </main>
+
+    <!-- Custom Cyber Alert Notification Box -->
+    <div id="cyberAlert" class="fixed bottom-6 right-6 glass-panel border-pink-500 text-white p-4 rounded-xl shadow-2xl transition-all duration-300 transform translate-y-20 opacity-0 pointer-events-none flex items-center gap-3 z-50">
+        <div class="w-10 h-10 rounded-lg bg-pink-500/20 border border-pink-500 flex items-center justify-center text-pink-500">
+            <i class="fa-solid fa-triangle-exclamation text-xl"></i>
+        </div>
+        <div>
+            <div class="text-xs font-mono text-pink-400 font-bold tracking-wider">SYSTEM WARNING</div>
+            <div id="cyberAlertMessage" class="text-sm font-semibold">此任務尚未解鎖！</div>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="mt-12 text-center text-xs text-slate-500 font-mono z-10">
+        <p>&copy; 2026 WEB PROGRAMMING PORTFOLIO // DESIGNED WITH Y2K CYBERPUNK STYLES</p>
+    </footer>
+
+    <!-- INTERACTIVE JAVASCRIPT -->
+    <script>
+        let toastTimeout;
+
+        function handleLockedClick(element, weekNum) {
+            // 1. Add shake animation effect
+            element.classList.add('shake-animation');
+            
+            setTimeout(() => {
+                element.classList.remove('shake-animation');
+            }, 400);
+
+            // 2. Display Cyber Warning Toast
+            const alertBox = document.getElementById('cyberAlert');
+            const alertMsg = document.getElementById('cyberAlertMessage');
+            
+            alertMsg.innerText = `[Week ${weekNum}] 任務尚未解鎖，請繼續推進課程！`;
+            
+            alertBox.classList.remove('translate-y-20', 'opacity-0', 'pointer-events-none');
+            alertBox.classList.add('translate-y-0', 'opacity-100');
+
+            clearTimeout(toastTimeout);
+            toastTimeout = setTimeout(() => {
+                alertBox.classList.remove('translate-y-0', 'opacity-100');
+                alertBox.classList.add('translate-y-20', 'opacity-0', 'pointer-events-none');
+            }, 3000);
+        }
+    </script>
+</body>
+</html>
